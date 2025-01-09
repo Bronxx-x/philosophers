@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhamdan <yhamdan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yousef <yousef@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 00:24:06 by yhamdan           #+#    #+#             */
-/*   Updated: 2025/01/04 01:22:12 by yhamdan          ###   ########.fr       */
+/*   Updated: 2025/01/07 18:04:03 by yousef           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	varsinit(t_vars *vars, char **argv)
+{
+	vars->philos_num = ft_atoi(argv[1]);
+	vars->die_t = ft_atoi(argv[2]);
+	vars->eat_t = ft_atoi(argv[3]);
+	vars->sleep_t = ft_atoi(argv[4]);
+	vars->threads = malloc(sizeof(t_philo *) * vars->philos_num);
+	vars->fork = malloc(sizeof(t_philo *) * vars->philos_num);	
+	//vars->sim_start = get_current_time_in_ms();
+	
+}
 
 int	args_ch(int arg, char **argv)
 {
@@ -38,8 +50,11 @@ int	args_ch(int arg, char **argv)
 
 int main (int arg, char *argv[])
 {
+	t_vars vars;
+	
 	if (args_ch(arg, argv));
 		return (1);
+	varsinit(&vars, argv);
 	
 	return (0);
 }

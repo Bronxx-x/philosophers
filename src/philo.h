@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhamdan <yhamdan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yousef <yousef@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 00:24:27 by yhamdan           #+#    #+#             */
-/*   Updated: 2025/01/04 01:20:42 by yhamdan          ###   ########.fr       */
+/*   Updated: 2025/01/07 18:04:40 by yousef           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ typedef struct s_fork
 
 typedef struct s_vars
 {
-	int				philos_count;
-	int				t_to_die;
-	int				t_to_eat;
-	int				t_to_sleep;
+	int				philos_num;
+	int				die_t;
+	int				eat_t;
+	int				sleep_t;
 	int				sim_stop;
-	long			start_time;
-	t_fork	*fork;
-	t_philo	*process;
+	long			sim_start;
+	t_fork	**fork;
+	t_philo	**threads;
 	pthread_mutex_t	sim_stop_mutex;
 	pthread_mutex_t	meal_mutex;
 	pthread_mutex_t	log_mutex;
@@ -58,6 +58,7 @@ size_t	ft_strlen(const char *str);
 long	ft_atoi(const char *str);
 int		ft_isdigit(int c);
 int		args_ch(int arg, char **argv);
+long	get_current_time_in_ms(void);
 /*
 long	get_time_in_ms(void);
 void	philo_error_handling(t_vars *vars, int num, int error);
