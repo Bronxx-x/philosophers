@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhamdan <yhamdan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yousef <yousef@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 22:00:38 by yhamdan           #+#    #+#             */
-/*   Updated: 2025/01/04 01:11:48 by yhamdan          ###   ########.fr       */
+/*   Updated: 2025/01/12 00:54:54 by yousef           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_atoi(const char *n)
+long	ft_atoi(const char *n)
 {
 	int			i;
 	int			sign;

@@ -1,4 +1,4 @@
-SRCS = ./src/main.c ./src/ft_atoi.c .src/time.c
+SRCS = ./src/main.c ./src/ft_atoi.c ./src/time.c ./src/display_error.c
 OBJS = $(SRCS:.c=.o)
 
 CC = cc
