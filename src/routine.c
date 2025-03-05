@@ -6,7 +6,7 @@
 /*   By: yousef <yousef@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 04:29:02 by yousef            #+#    #+#             */
-/*   Updated: 2025/01/24 05:08:57 by yousef           ###   ########.fr       */
+/*   Updated: 2025/03/05 17:01:26 by yousef           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void    forks_lock(t_philo *philo)
 {
-    if (philo->fork1 < philo->fork2)
+    if (philo->philo_num % 2 == 0)
     {
         pthread_mutex_lock(philo->lf_mutex);
         pthread_mutex_lock(philo->rf_mutex);
@@ -28,7 +28,7 @@ void    forks_lock(t_philo *philo)
 
 void    forks_unlock(t_philo *philo)
 {
-    if (philo->fork1 < philo->fork2)
+    if (philo->philo_num % 2 == 0)
     {
         pthread_mutex_unlock(philo->lf_mutex);
         pthread_mutex_unlock(philo->rf_mutex);
@@ -40,6 +40,30 @@ void    forks_unlock(t_philo *philo)
     }
 }
 
+void	*routine(void *arg)
+{
+    t_philo	*philo;
+
+    philo = (t_philo *)arg;
+    if (philo->lf_mutex == philo->rf_mutex)
+    {
+        thinking(philo);
+        while (!starvation_ch(philo))
+            ;
+        return (NULL);
+    }
+    while (1)
+    {      
+        if (eating(philo))
+            break ;
+        if (sleeping(philo))
+            break ;
+        if (thinking(philo))
+            break ;
+    }
+    return (NULL);
+}
+
 void    threading(t_vars *vars)
 {
     int i;
@@ -47,7 +71,7 @@ void    threading(t_vars *vars)
     i = 0;
     while (vars->philos_num > i)
     {
-        vars->err_ch = pthread_create(&vars->philos[i]->thread, NULL, routine, (void *)vars->philos[i]);
+        vars->err_ch = pthread_create(&vars->philos[i]->thread, NULL, routine, vars->philos[i]);
         if (vars->err_ch)
         {
             pthread_mutex_lock(vars->stop_mutex);
@@ -62,19 +86,4 @@ void    threading(t_vars *vars)
         pthread_join(vars->philos[vars->j++]->thread, NULL);
     if (i != vars->philos_num)
         freevars(vars, 3);
-}
-
-void	*routine(void *arg)
-{
-    t_philo	*philo;
-
-    philo = (t_philo *)arg;
-    while (1)
-    {
-        if (eating(philo))
-            break ;
-        if (starvation_ch(philo))
-            break ;
-    }
-    return (NULL);
 }

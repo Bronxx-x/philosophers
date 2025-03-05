@@ -6,33 +6,38 @@
 /*   By: yousef <yousef@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 01:17:32 by yousef            #+#    #+#             */
-/*   Updated: 2025/01/24 05:05:18 by yousef           ###   ########.fr       */
+/*   Updated: 2025/03/05 17:26:37 by yousef           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void    freevars(t_vars *vars, int i)
+int    freevars(t_vars *vars, int i)
 {
     if (i == 1)
-        printf("malloc failed\n");
+        vars->exit = 2;
     if (i >= 2)
     {
         if (i >= 3)
         {
-            while (vars->counter >= 0)
+            while (--vars->counter >= 0)
             {
-                pthread_mutex_destroy(vars->philos[vars->counter]->lf_mutex);
-                pthread_mutex_destroy(vars->philos[vars->counter]->rf_mutex);
-                pthread_mutex_destroy(vars->philos[vars->counter]->p_mutex);
-                pthread_mutex_destroy(vars->philos[vars->counter]->death_mutex);
                 free(vars->philos[vars->counter]);
-                vars->counter--;
+                vars->exit = 4;
             }
         }
-        pthread_mutex_destroy(vars->stop_mutex);
-        pthread_mutex_destroy(vars->p_mutex);
-        free(vars->philos);
+        vars->exit = 3;
+        i = 0;
+        while (i < vars->philos_num)
+            pthread_mutex_destroy(&vars->forks[i++]);
     }
-    exit(1);
+    pthread_mutex_destroy(vars->p_mutex);
+    pthread_mutex_destroy(vars->stop_mutex);
+    pthread_mutex_destroy(vars->death_mutex);
+    free(vars->death_mutex);
+    free(vars->stop_mutex);
+    free(vars->p_mutex);
+    free(vars->forks);
+    free(vars->philos);
+    return (0);
 }

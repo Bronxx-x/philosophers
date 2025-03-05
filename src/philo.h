@@ -6,7 +6,7 @@
 /*   By: yousef <yousef@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 00:24:27 by yhamdan           #+#    #+#             */
-/*   Updated: 2025/01/24 05:04:29 by yousef           ###   ########.fr       */
+/*   Updated: 2025/03/05 17:06:40 by yousef           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ typedef struct s_philo
 	long			last_meal;
 	int				philo_num;
 	int				state;
-	int				fork1;
-	int				fork2;
 	int				meals;
 	int				meals_eaten;
 	int				die_t;
@@ -45,17 +43,21 @@ typedef struct s_vars
 {
 	int				philos_num;
 	int				num_of_meals;
+	int				argc;
 	int				j;
 	int				die_t;
 	int				eat_t;
 	int				sleep_t;
+	int				exit;
 	int				current_sim;
 	int				err_ch;
 	long			sim_start;
 	int				init_counter;
 	int				counter;
 	pthread_mutex_t *p_mutex;
+	pthread_mutex_t *forks;
 	pthread_mutex_t *stop_mutex;
+	pthread_mutex_t *death_mutex;
 	t_philo	**philos;
 }					t_vars;
 
@@ -65,10 +67,17 @@ long	ft_atoi(const char *str);
 int		ft_isdigit(int c);
 int		args_ch(int arg, char **argv);
 long	get_current_time_in_ms(void);
-void	freevars(t_vars *vars, int i);
-void	philo_init(t_vars *vars, int i);
+int		freevars(t_vars *vars, int i);
+void	philo_init(t_vars *vars);
 void	varsinit(t_vars *vars, char **argv);
 void	*routine(void *arg);
 void    threading(t_vars *vars);
+int   	eating(t_philo *philos);
+int		starvation_ch(t_philo *philos);
+void    forks_lock(t_philo *philo);
+void    forks_unlock(t_philo *philo);
+int		thinking(t_philo *philos);
+int 	sleeping(t_philo *philos);
+long	diy_sleep(long time, long action_time, t_philo *philo);
 
 #endif
