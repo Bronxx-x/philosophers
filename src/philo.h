@@ -6,7 +6,7 @@
 /*   By: yousef <yousef@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 00:24:27 by yhamdan           #+#    #+#             */
-/*   Updated: 2025/03/05 17:06:40 by yousef           ###   ########.fr       */
+/*   Updated: 2025/03/08 23:26:33 by yousef           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,13 @@ typedef struct s_philo
 	long			last_meal;
 	int				philo_num;
 	int				state;
+	int				*died;
 	int				meals;
 	int				meals_eaten;
 	int				die_t;
 	int				eat_t;
 	int				sleep_t;
+	long			funeral;
 	long			sim_start;
 	pthread_mutex_t	*rf_mutex;
 	pthread_mutex_t *lf_mutex;
@@ -46,10 +48,10 @@ typedef struct s_vars
 	int				argc;
 	int				j;
 	int				die_t;
+	int				died;
 	int				eat_t;
 	int				sleep_t;
 	int				exit;
-	int				current_sim;
 	int				err_ch;
 	long			sim_start;
 	int				init_counter;
@@ -79,5 +81,6 @@ void    forks_unlock(t_philo *philo);
 int		thinking(t_philo *philos);
 int 	sleeping(t_philo *philos);
 long	diy_sleep(long time, long action_time, t_philo *philo);
+void    who_died(t_vars *vars);
 
 #endif

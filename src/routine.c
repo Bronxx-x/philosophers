@@ -6,7 +6,7 @@
 /*   By: yousef <yousef@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 04:29:02 by yousef            #+#    #+#             */
-/*   Updated: 2025/03/05 17:01:26 by yousef           ###   ########.fr       */
+/*   Updated: 2025/03/08 23:51:12 by yousef           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	*routine(void *arg)
     t_philo	*philo;
 
     philo = (t_philo *)arg;
+    usleep(1000);
+    philo->sim_start = get_current_time_in_ms();
     if (philo->lf_mutex == philo->rf_mutex)
     {
         thinking(philo);
@@ -75,7 +77,7 @@ void    threading(t_vars *vars)
         if (vars->err_ch)
         {
             pthread_mutex_lock(vars->stop_mutex);
-                usleep(vars->die_t);
+                usleep(vars->die_t * 1000);
             pthread_mutex_unlock(vars->p_mutex);
             break ;
         }
@@ -84,6 +86,8 @@ void    threading(t_vars *vars)
     vars->j = 0;
     while (i > vars->j)
         pthread_join(vars->philos[vars->j++]->thread, NULL);
+    if (vars->died != -1)
+		who_died(vars);
     if (i != vars->philos_num)
         freevars(vars, 3);
 }

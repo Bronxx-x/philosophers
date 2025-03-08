@@ -6,7 +6,7 @@
 /*   By: yousef <yousef@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 00:24:06 by yhamdan           #+#    #+#             */
-/*   Updated: 2025/03/05 17:24:55 by yousef           ###   ########.fr       */
+/*   Updated: 2025/03/08 23:59:10 by yousef           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	mutex_init(t_vars *vars)
 	vars->philos[vars->counter]->death_mutex = vars->death_mutex;
 	vars->philos[vars->counter]->lf_mutex = &vars->forks[vars->counter];
 	vars->philos[vars->counter]->rf_mutex = &vars->forks[(vars->counter + 1) % vars->philos_num];
+	vars->philos[vars->counter]->died = &vars->died;
+	vars->philos[vars->counter]->funeral = -1;
 }
 
 void	philo_init(t_vars *vars)
@@ -70,6 +72,7 @@ void	varsinit(t_vars *vars, char **argv)
 	if (!vars->stop_mutex || !vars->p_mutex || !vars->philos || !vars->forks || !vars->death_mutex)
 		freevars(vars, 1);
 	vars->counter = -1;
+	vars->died = -1;
 	while (++vars->counter < vars->philos_num)
 	{
 		vars->err_ch = pthread_mutex_init(&vars->forks[vars->counter], NULL);
@@ -94,6 +97,8 @@ int	args_ch(int argc, char **argv)
 	while (ch == 0 && argv[i])
 	{
 		j = 0;
+		if (argv[i][0] == '0')
+			ch = 1;
 		while (ft_isdigit(argv[i][j]))
 			j++;
 		if (j != (int)ft_strlen(argv[i]))
@@ -114,6 +119,7 @@ int main (int argc, char *argv[])
 	if (args_ch(argc, argv))
 		return (1);
 	varsinit(&vars, argv);
+	usleep(150);
 	if (vars.exit <= 0)
 		freevars(&vars, 3);
 	return (0);
