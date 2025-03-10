@@ -6,7 +6,7 @@
 /*   By: yousef <yousef@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 00:24:06 by yhamdan           #+#    #+#             */
-/*   Updated: 2025/03/08 23:59:10 by yousef           ###   ########.fr       */
+/*   Updated: 2025/03/10 04:59:30 by yousef           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	mutex_init(t_vars *vars)
 
 void	philo_init(t_vars *vars)
 {
+	vars->died = -1;
 	vars->err_ch = pthread_mutex_init(vars->stop_mutex, NULL);
 	vars->err_ch = pthread_mutex_init(vars->p_mutex, NULL);
 	vars->err_ch = pthread_mutex_init(vars->death_mutex, NULL);
@@ -72,14 +73,14 @@ void	varsinit(t_vars *vars, char **argv)
 	if (!vars->stop_mutex || !vars->p_mutex || !vars->philos || !vars->forks || !vars->death_mutex)
 		freevars(vars, 1);
 	vars->counter = -1;
-	vars->died = -1;
 	while (++vars->counter < vars->philos_num)
 	{
 		vars->err_ch = pthread_mutex_init(&vars->forks[vars->counter], NULL);
 		if (vars->err_ch)
 			freevars(vars, 2);
 	}
-	philo_init(vars);
+	if (vars->exit <= 0)
+		philo_init(vars);
 }
 
 int	args_ch(int argc, char **argv)

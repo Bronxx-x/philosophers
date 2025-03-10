@@ -6,7 +6,7 @@
 /*   By: yousef <yousef@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 01:17:32 by yousef            #+#    #+#             */
-/*   Updated: 2025/03/05 17:26:37 by yousef           ###   ########.fr       */
+/*   Updated: 2025/03/10 03:24:08 by yousef           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,8 @@ int    freevars(t_vars *vars, int i)
         if (i >= 3)
         {
             while (--vars->counter >= 0)
-            {
                 free(vars->philos[vars->counter]);
-                vars->exit = 4;
-            }
+            vars->exit = 4;
         }
         vars->exit = 3;
         i = 0;
