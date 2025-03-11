@@ -6,7 +6,7 @@
 /*   By: yhamdan <yhamdan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:43:54 by yousef            #+#    #+#             */
-/*   Updated: 2025/03/12 00:46:35 by yhamdan          ###   ########.fr       */
+/*   Updated: 2025/03/12 02:22:26 by yhamdan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ long	diy_sleep(long time, long action_time, t_philo *philo)
 	while (cur - time < action_time)
 	{
 		cur = get_current_time_in_ms();
+		usleep(100);
 		while (cur < time)
 			cur = get_current_time_in_ms();
 		if (starvation_ch(philo))

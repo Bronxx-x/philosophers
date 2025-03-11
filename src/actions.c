@@ -6,7 +6,7 @@
 /*   By: yhamdan <yhamdan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 04:57:28 by yousef            #+#    #+#             */
-/*   Updated: 2025/03/12 00:41:17 by yhamdan          ###   ########.fr       */
+/*   Updated: 2025/03/12 02:43:25 by yhamdan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	sleeping(t_philo *philos)
 
 int	thinking(t_philo *philos)
 {
-	usleep(100);
 	if (starvation_ch(philos))
 		return (1);
 	pthread_mutex_lock(philos->p_mutex);
@@ -45,7 +44,6 @@ int	eating(t_philo *philo)
 		forks_unlock(philo);
 		return (1);
 	}
-	usleep(50);
 	pthread_mutex_lock(philo->p_mutex);
 	printf(" %ld ms, philo number %d has taken a fork \n",
 		get_current_time_in_ms() - philo->sim_start, philo->philo_num);
