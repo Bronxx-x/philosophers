@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yousef <yousef@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhamdan <yhamdan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 00:24:06 by yhamdan           #+#    #+#             */
-/*   Updated: 2025/03/10 04:59:30 by yousef           ###   ########.fr       */
+/*   Updated: 2025/03/12 00:58:58 by yhamdan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	mutex_init(t_vars *vars)
 	vars->philos[vars->counter]->p_mutex = vars->p_mutex;
 	vars->philos[vars->counter]->death_mutex = vars->death_mutex;
 	vars->philos[vars->counter]->lf_mutex = &vars->forks[vars->counter];
-	vars->philos[vars->counter]->rf_mutex = &vars->forks[(vars->counter + 1) % vars->philos_num];
+	vars->philos[vars->counter]->rf_mutex = &vars->forks[(vars->counter + 1)
+		% vars->philos_num];
 	vars->philos[vars->counter]->died = &vars->died;
 	vars->philos[vars->counter]->funeral = -1;
 }
@@ -34,7 +35,7 @@ void	philo_init(t_vars *vars)
 	if (vars->err_ch)
 		freevars(vars, 2);
 	if (vars->exit > 0)
-		return ;	
+		return ;
 	vars->counter = -1;
 	while (++vars->counter < vars->philos_num)
 	{
@@ -56,10 +57,6 @@ void	philo_init(t_vars *vars)
 
 void	varsinit(t_vars *vars, char **argv)
 {
-	vars->philos_num = ft_atoi(argv[1]);
-	vars->die_t = ft_atoi(argv[2]);
-	vars->eat_t = ft_atoi(argv[3]);
-	vars->sleep_t = ft_atoi(argv[4]);
 	if (argv[5])
 		vars->num_of_meals = ft_atoi(argv[5]);
 	else
@@ -70,7 +67,8 @@ void	varsinit(t_vars *vars, char **argv)
 	vars->stop_mutex = malloc(sizeof(pthread_mutex_t));
 	vars->p_mutex = malloc(sizeof(pthread_mutex_t));
 	vars->death_mutex = malloc(sizeof(pthread_mutex_t));
-	if (!vars->stop_mutex || !vars->p_mutex || !vars->philos || !vars->forks || !vars->death_mutex)
+	if (!vars->stop_mutex || !vars->p_mutex || !vars->philos || !vars->forks
+		|| !vars->death_mutex)
 		freevars(vars, 1);
 	vars->counter = -1;
 	while (++vars->counter < vars->philos_num)
@@ -87,8 +85,8 @@ int	args_ch(int argc, char **argv)
 {
 	int	i;
 	int	j;
-	int ch;
-	
+	int	ch;
+
 	i = 1;
 	ch = 0;
 	if (!(argc == 5 || argc == 6))
@@ -111,14 +109,18 @@ int	args_ch(int argc, char **argv)
 	return (ch);
 }
 
-int main (int argc, char *argv[])
+int	main(int argc, char *argv[])
 {
-	t_vars vars;
-	
+	t_vars	vars;
+
 	vars.argc = argc;
 	vars.exit = 0;
 	if (args_ch(argc, argv))
 		return (1);
+	vars.philos_num = ft_atoi(argv[1]);
+	vars.die_t = ft_atoi(argv[2]);
+	vars.eat_t = ft_atoi(argv[3]);
+	vars.sleep_t = ft_atoi(argv[4]);
 	varsinit(&vars, argv);
 	usleep(150);
 	if (vars.exit <= 0)

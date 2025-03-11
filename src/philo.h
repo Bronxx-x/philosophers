@@ -14,12 +14,11 @@
 # define PHILO_H
 
 # include <pthread.h>
-# include <sys/time.h>
-# include <string.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <string.h>
+# include <sys/time.h>
 # include <unistd.h>
-
 
 typedef struct s_philo
 {
@@ -36,9 +35,9 @@ typedef struct s_philo
 	long			funeral;
 	long			sim_start;
 	pthread_mutex_t	*rf_mutex;
-	pthread_mutex_t *lf_mutex;
+	pthread_mutex_t	*lf_mutex;
 	pthread_mutex_t	*p_mutex;
-	pthread_mutex_t *death_mutex;
+	pthread_mutex_t	*death_mutex;
 }					t_philo;
 
 typedef struct s_vars
@@ -56,31 +55,31 @@ typedef struct s_vars
 	long			sim_start;
 	int				init_counter;
 	int				counter;
-	pthread_mutex_t *p_mutex;
-	pthread_mutex_t *forks;
-	pthread_mutex_t *stop_mutex;
-	pthread_mutex_t *death_mutex;
-	t_philo	**philos;
+	pthread_mutex_t	*p_mutex;
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	*stop_mutex;
+	pthread_mutex_t	*death_mutex;
+	t_philo			**philos;
 }					t_vars;
 
-int		starvation_ch(t_philo *philos);
-size_t	ft_strlen(const char *str);
-long	ft_atoi(const char *str);
-int		ft_isdigit(int c);
-int		args_ch(int arg, char **argv);
-long	get_current_time_in_ms(void);
-int		freevars(t_vars *vars, int i);
-void	philo_init(t_vars *vars);
-void	varsinit(t_vars *vars, char **argv);
-void	*routine(void *arg);
-void    threading(t_vars *vars);
-int   	eating(t_philo *philos);
-int		starvation_ch(t_philo *philos);
-void    forks_lock(t_philo *philo);
-void    forks_unlock(t_philo *philo);
-int		thinking(t_philo *philos);
-int 	sleeping(t_philo *philos);
-long	diy_sleep(long time, long action_time, t_philo *philo);
-void    who_died(t_vars *vars);
+int					starvation_ch(t_philo *philos);
+size_t				ft_strlen(const char *str);
+long				ft_atoi(const char *str);
+int					ft_isdigit(int c);
+int					args_ch(int arg, char **argv);
+long				get_current_time_in_ms(void);
+int					freevars(t_vars *vars, int i);
+void				philo_init(t_vars *vars);
+void				varsinit(t_vars *vars, char **argv);
+void				*routine(void *arg);
+void				threading(t_vars *vars);
+int					eating(t_philo *philos);
+int					starvation_ch(t_philo *philos);
+void				forks_lock(t_philo *philo);
+void				forks_unlock(t_philo *philo);
+int					thinking(t_philo *philos);
+int					sleeping(t_philo *philos);
+long				diy_sleep(long time, long action_time, t_philo *philo);
+void				who_died(t_vars *vars);
 
 #endif

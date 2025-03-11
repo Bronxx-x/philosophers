@@ -12,82 +12,83 @@
 
 #include "philo.h"
 
-void    forks_lock(t_philo *philo)
+void	forks_lock(t_philo *philo)
 {
-    if (philo->philo_num % 2 == 0)
-    {
-        pthread_mutex_lock(philo->lf_mutex);
-        pthread_mutex_lock(philo->rf_mutex);
-    }
-    else
-    {
-        pthread_mutex_lock(philo->rf_mutex);
-        pthread_mutex_lock(philo->lf_mutex);
-    }
+	if (philo->philo_num % 2 == 0)
+	{
+		pthread_mutex_lock(philo->lf_mutex);
+		pthread_mutex_lock(philo->rf_mutex);
+	}
+	else
+	{
+		pthread_mutex_lock(philo->rf_mutex);
+		pthread_mutex_lock(philo->lf_mutex);
+	}
 }
 
-void    forks_unlock(t_philo *philo)
+void	forks_unlock(t_philo *philo)
 {
-    if (philo->philo_num % 2 == 0)
-    {
-        pthread_mutex_unlock(philo->lf_mutex);
-        pthread_mutex_unlock(philo->rf_mutex);
-    }
-    else
-    {
-        pthread_mutex_unlock(philo->rf_mutex);
-        pthread_mutex_unlock(philo->lf_mutex);
-    }
+	if (philo->philo_num % 2 == 0)
+	{
+		pthread_mutex_unlock(philo->lf_mutex);
+		pthread_mutex_unlock(philo->rf_mutex);
+	}
+	else
+	{
+		pthread_mutex_unlock(philo->rf_mutex);
+		pthread_mutex_unlock(philo->lf_mutex);
+	}
 }
 
 void	*routine(void *arg)
 {
-    t_philo	*philo;
+	t_philo	*philo;
 
-    philo = (t_philo *)arg;
-    usleep(1000);
-    philo->sim_start = get_current_time_in_ms();
-    if (philo->lf_mutex == philo->rf_mutex)
-    {
-        thinking(philo);
-        while (!starvation_ch(philo))
-            ;
-        return (NULL);
-    }
-    while (1)
-    {      
-        if (eating(philo))
-            break ;
-        if (sleeping(philo))
-            break ;
-        if (thinking(philo))
-            break ;
-    }
-    return (NULL);
+	philo = (t_philo *)arg;
+	usleep(1000);
+	philo->sim_start = get_current_time_in_ms();
+	if (philo->lf_mutex == philo->rf_mutex)
+	{
+		thinking(philo);
+		while (!starvation_ch(philo))
+			;
+		return (NULL);
+	}
+	while (1)
+	{
+		if (eating(philo))
+			break ;
+		if (sleeping(philo))
+			break ;
+		if (thinking(philo))
+			break ;
+	}
+	return (NULL);
 }
 
-void    threading(t_vars *vars)
+void	threading(t_vars *vars)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (vars->philos_num > i)
-    {
-        vars->err_ch = pthread_create(&vars->philos[i]->thread, NULL, routine, vars->philos[i]);
-        if (vars->err_ch)
-        {
-            pthread_mutex_lock(vars->stop_mutex);
-                usleep(vars->die_t * 1000);
-            pthread_mutex_unlock(vars->p_mutex);
-            break ;
-        }
-        i++;
-    }
-    vars->j = 0;
-    while (i > vars->j)
-        pthread_join(vars->philos[vars->j++]->thread, NULL);
-    if (vars->died != -1)
+	i = 0;
+	while (vars->philos_num > i)
+	{
+		vars->err_ch = pthread_create(&vars->philos[i]->thread, NULL, routine,
+				vars->philos[i]);
+		if (vars->err_ch)
+		{
+			pthread_mutex_lock(vars->stop_mutex);
+			usleep(vars->die_t * 1000);
+			pthread_mutex_unlock(vars->p_mutex);
+			break ;
+		}
+		i++;
+	}
+	vars->j = 0;
+	while (i > vars->j)
+		pthread_join(vars->philos[vars->j++]->thread, NULL);
+	if (vars->died != -1)
 		who_died(vars);
-    if (i != vars->philos_num)
-        freevars(vars, 3);
+	if (i != vars->philos_num)
+		freevars(vars, 3);
 }
