@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhamdan <yhamdan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yousef <yousef@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 04:57:28 by yousef            #+#    #+#             */
-/*   Updated: 2025/03/12 02:43:25 by yhamdan          ###   ########.fr       */
+/*   Updated: 2025/03/13 00:10:09 by yousef           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	sleeping(t_philo *philos)
 {
+	usleep(100);
 	if (starvation_ch(philos))
 		return (1);
 	pthread_mutex_lock(philos->p_mutex);
@@ -27,6 +28,7 @@ int	sleeping(t_philo *philos)
 
 int	thinking(t_philo *philos)
 {
+	usleep(100);
 	if (starvation_ch(philos))
 		return (1);
 	pthread_mutex_lock(philos->p_mutex);
@@ -68,9 +70,12 @@ int	starvation_ch(t_philo *philos)
 	if (get_current_time_in_ms() - philos->last_meal > philos->die_t
 		|| *(philos->died) != -1)
 	{
-		philos->funeral = get_current_time_in_ms() - philos->sim_start;
 		if (*(philos->died) == -1)
+		{
 			*(philos->died) = philos->philo_num;
+			philos->funeral = philos->die_t
+				+ (philos->sim_start - philos->last_meal);
+		}
 		philos->state = 1;
 		pthread_mutex_unlock(philos->death_mutex);
 		usleep(100);
@@ -84,7 +89,7 @@ void	who_died(t_vars *vars)
 {
 	usleep(50);
 	pthread_mutex_lock(vars->p_mutex);
-	printf(" %ld ms, philo number %d died\n", get_current_time_in_ms()
-		- vars->sim_start, vars->died);
+	printf(" %ld ms, philo number %d died\n",
+		vars->philos[vars->died - 1]->funeral + 2, vars->died);
 	pthread_mutex_unlock(vars->p_mutex);
 }
