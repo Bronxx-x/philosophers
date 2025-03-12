@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhamdan <yhamdan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yousef <yousef@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 04:29:02 by yousef            #+#    #+#             */
-/*   Updated: 2025/03/12 02:43:38 by yhamdan          ###   ########.fr       */
+/*   Updated: 2025/03/12 22:35:56 by yousef           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	philo->sim_start = get_current_time_in_ms();
 	if (philo->lf_mutex == philo->rf_mutex)
 	{
 		thinking(philo);
